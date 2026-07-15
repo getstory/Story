@@ -87,13 +87,55 @@ function buildPanelEmbed(config) {
 }
 
 function buildPanelButtonRow(config) {
-    return new ActionRowBuilder().addComponents(
-        new ButtonBuilder()
-            .setCustomId('create_ticket')
-            .setLabel(config.ticketButtonLabel || 'Create Ticket')
-            .setStyle(ButtonStyle.Primary)
-            .setEmoji('📩'),
-    );
+
+    // Dropdown ticket panel
+    if (config.ticketPanelType === "dropdown") {
+
+        const menu = new StringSelectMenuBuilder()
+            .setCustomId("create_ticket")
+            .setPlaceholder("Select a ticket category")
+            .addOptions(
+                {
+                    label: "General Support",
+                    description: "Questions and assistance",
+                    value: "general",
+                    emoji: "💬"
+                },
+                {
+                    label: "Bug Report",
+                    description: "Report bugs or issues",
+                    value: "bug",
+                    emoji: "🐛"
+                },
+                {
+                    label: "Purchase Help",
+                    description: "Payment or order issues",
+                    value: "purchase",
+                    emoji: "💳"
+                },
+                {
+                    label: "Technical Support",
+                    description: "Technical problems",
+                    value: "technical",
+                    emoji: "🛠️"
+                }
+            );
+
+
+        return new ActionRowBuilder()
+            .addComponents(menu);
+    }
+
+
+    // Normal button ticket panel
+    return new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+                .setCustomId('create_ticket')
+                .setLabel(config.ticketButtonLabel || 'Create Ticket')
+                .setStyle(ButtonStyle.Primary)
+                .setEmoji('📩')
+        );
 }
 
 async function repostTicketPanel(client, guild, guildConfig, guildId) {
