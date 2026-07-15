@@ -156,17 +156,23 @@ description: panelMessage,
                     components: [ticketButton],
                 });
 
-                if (client.db && interaction.guildId) {
-                    const currentConfig = existingConfig;
-                    currentConfig.ticketCategoryId = categoryChannel ? categoryChannel.id : null;
-                    currentConfig.ticketClosedCategoryId = closedCategoryChannel ? closedCategoryChannel.id : null;
-                    currentConfig.ticketStaffRoleId = staffRole ? staffRole.id : null;
-                    currentConfig.ticketPanelChannelId = panelChannel.id;
-                    currentConfig.ticketPanelMessageId = sentPanel?.id || null;
-                    currentConfig.ticketPanelMessage = panelMessage;
-                    currentConfig.ticketButtonLabel = buttonLabel;
-                    currentConfig.maxTicketsPerUser = maxTicketsPerUser;
-                    currentConfig.dmOnClose = dmOnClose;
+if (client.db && interaction.guildId) {
+    const currentConfig = existingConfig;
+
+    currentConfig.ticketCategoryId = categoryChannel ? categoryChannel.id : null;
+    currentConfig.ticketClosedCategoryId = closedCategoryChannel ? closedCategoryChannel.id : null;
+    currentConfig.ticketStaffRoleId = staffRole ? staffRole.id : null;
+
+    currentConfig.ticketPanelChannelId = panelChannel.id;
+    currentConfig.ticketPanelMessageId = sentPanel?.id || null;
+    currentConfig.ticketPanelMessage = panelMessage;
+
+    currentConfig.ticketButtonLabel = buttonLabel;
+    currentConfig.ticketPanelType = panelType || "button";
+
+    currentConfig.maxTicketsPerUser = maxTicketsPerUser;
+    currentConfig.dmOnClose = dmOnClose;
+}
 
                     await setGuildConfig(client, interaction.guildId, currentConfig);
                     logger.info('Ticket configuration saved', {
